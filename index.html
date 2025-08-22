@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teras Muda - Using AI for Community Impact</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(1deg); }
+        }
+
+        .hero-content {
+            z-index: 2;
+            max-width: 800px;
+            padding: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: slideInDown 1s ease-out;
+        }
+
+        .hero h2 {
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 0.5rem;
+            animation: slideInLeft 1s ease-out 0.3s both;
+        }
+
+        .hero .date {
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+            animation: slideInRight 1s ease-out 0.6s both;
+        }
+
+        @keyframes slideInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Navigation Buttons */
+        .nav-buttons {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            animation: slideInUp 1s ease-out 0.9s both;
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .nav-btn {
+            padding: 1rem 2rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .nav-btn i {
+            font-size: 1.2rem;
+        }
+
+        /* Speaker Section */
+        .speaker-section {
+            display: none;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            padding: 2rem;
+            color: white;
+        }
+
+        .speaker-section.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .speaker-content {
+            max-width: 1000px;
+            display: block;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 3rem;
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .speaker-photo {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .qr-code {
+            width: 200px;
+            height: 200px;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+            background: white;
+            padding: 10px;
+        }
+
+        .qr-code:hover {
+            transform: scale(1.05);
+        }
+
+        .speaker-info h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        .speaker-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .speaker-info ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .speaker-info li {
+            padding: 0.8rem 0;
+            font-size: 1.1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .speaker-info li:before {
+            content: '✨';
+            position: absolute;
+            left: 0;
+            top: 0.8rem;
+        }
+
+        .back-btn {
+            margin-top: 2rem;
+            padding: 0.8rem 2rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            color: white;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Closing Section */
+        .closing-section {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 2rem;
+        }
+
+        .closing-content {
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 3rem;
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .closing-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: #fff;
+        }
+
+        .closing-content p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .ai-fact {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            border-left: 4px solid #fff;
+        }
+
+        .ai-fact h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        .ai-fact p {
+            font-size: 1.1rem;
+            font-style: italic;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .hero h2 { font-size: 1.5rem; }
+            .nav-buttons { gap: 1rem; }
+            .nav-btn { padding: 0.8rem 1.5rem; font-size: 1rem; }
+            
+            .speaker-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 2rem;
+            }
+            
+            .speaker-info h2 { font-size: 2rem; }
+            .speaker-info h3 { font-size: 1.5rem; }
+        }
+
+        /* Scroll Animation */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-10px); }
+            60% { transform: translateX(-50%) translateY(-5px); }
+        }
+
+        .scroll-indicator i {
+            font-size: 2rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <h1><strong>Using AI for Community Impact</strong></h1>
+            <h2>Teras Muda Upgrading Session</h2>
+            <div class="date">23 Agustus 2025</div>
+            
+            <div class="nav-buttons">
+                <a href="https://coachgielsiregar.github.io/terasmuda-quiz/" class="nav-btn" target="_blank">
+                    <i class="fas fa-brain"></i>
+                    AI Quiz Challenge
+                </a>
+                <button class="nav-btn" onclick="showSpeaker()">
+                    <i class="fas fa-user-graduate"></i>
+                    Info Narasumber
+                </button>
+                <a href="https://coachgielsiregar.github.io/terasmuda/" class="nav-btn" target="_blank">
+                    <i class="fas fa-book-open"></i>
+                    Materi
+                </a>
+            </div>
+        </div>
+        <div class="scroll-indicator" onclick="showClosing()">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- Speaker Section -->
+    <section class="speaker-section" id="speaker">
+        <div class="speaker-content">
+            <div class="speaker-info">
+                <h2>Narasumber</h2>
+                <h3>Giel Utami Putri Siregar</h3>
+                <ul>
+                    <li>S2 Ilmu Komputer UNM</li>
+                    <li>4+ Years Experience as AI & Microsoft Certified Trainer at PT Orbit Future Academy (BJ Habibie Group)</li>
+                    <li>Specialized in Corporate Training & Digital Transformation</li>
+                </ul>
+                
+                <div class="contact-info">
+                    <p><i class="fab fa-whatsapp"></i> WhatsApp: 085179860115</p>
+                    <p><i class="fab fa-linkedin"></i> LinkedIn: linkedin.com/in/gielsiregar/</p>
+                    <p><i class="fab fa-instagram"></i> Instagram: gielsiregar</p>
+                </div>
+                
+                <a href="https://drive.google.com/file/d/1zUqQyYlOIPH94G7Wu2YkJBaujRyMc1IY/view?usp=sharing" target="_blank" class="portfolio-btn">
+                    <i class="fas fa-briefcase"></i>
+                    Portofolio Trainer
+                </a>
+            </div>
+        </div>
+        <button class="back-btn" onclick="showHero()">
+            <i class="fas fa-arrow-left"></i> Kembali
+        </button>
+    </section>
+
+    <!-- Closing Section -->
+    <section class="closing-section" id="closing" style="display: none;">
+        <div class="closing-content">
+            <h2>🚀 Mari Bersama Membangun Masa Depan dengan AI!</h2>
+            <p>
+                Terima kasih telah mengikuti sesi "Using AI for Community Impact" hari ini. 
+                Semoga ilmu yang dibagikan dapat bermanfaat untuk mengembangkan komunitas 
+                dan menciptakan dampak positif melalui teknologi AI.
+            </p>
+            
+            <div class="ai-fact">
+                <h3>💡 Fakta Menarik tentang AI</h3>
+                <p>
+                    "Pada tahun 2025, diperkirakan 97 juta pekerjaan baru akan tercipta berkat AI, 
+                    sementara teknologi ini dapat meningkatkan produktivitas global hingga 40%. 
+                    AI bukan hanya tentang teknologi, tapi tentang memberdayakan manusia untuk 
+                    mencapai potensi terbaiknya."
+                </p>
+            </div>
+            
+            <p style="margin-top: 2rem; font-size: 1.4rem; font-weight: 600;">
+                "The best way to predict the future is to create it with AI" 🌟
+            </p>
+            
+            <button class="back-btn" onclick="showHero()" style="margin-top: 2rem;">
+                <i class="fas fa-home"></i> Kembali ke Beranda
+            </button>
+        </div>
+    </section>
+
+    <script>
+        // QR Code is now embedded directly, no need to load image
+        function loadSpeakerImage() {
+            // QR code is now displayed directly in HTML
+            console.log('QR Code loaded for speaker photo access');
+        }
+
+        function showSpeaker() {
+            document.getElementById('hero').style.display = 'none';
+            document.getElementById('closing').style.display = 'none';
+            document.getElementById('speaker').classList.add('active');
+        }
+
+        function showHero() {
+            document.getElementById('speaker').classList.remove('active');
+            document.getElementById('closing').style.display = 'none';
+            document.getElementById('hero').style.display = 'flex';
+        }
+
+        function showClosing() {
+            document.getElementById('hero').style.display = 'none';
+            document.getElementById('speaker').classList.remove('active');
+            document.getElementById('closing').style.display = 'flex';
+        }
+
+        // Load image when page loads
+        window.addEventListener('DOMContentLoaded', loadSpeakerImage);
+
+        // Add smooth scrolling effect
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add entrance animations
+            const elements = document.querySelectorAll('.hero-content > *');
+            elements.forEach((el, index) => {
+                el.style.animationDelay = `${index * 0.2}s`;
+            });
+        });
+    </script>
+</body>
+</html>
